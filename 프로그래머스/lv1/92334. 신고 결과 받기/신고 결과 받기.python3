@@ -1,0 +1,18 @@
+def solution(id_list, report, k):
+    ids = {id:set() for id in id_list}
+    for rep in report:
+        reporter, reported = rep.split(" ")
+        ids.get(reported).add(reporter)
+    # 딕셔너리 사용. 각 id는 자신을 신고한 reporter를 기록한다. 중복 케이스는 set으로 커버.
+    
+    report_cnt = {id:0 for id in id_list}
+    # 자신을 신고한 reporter 수가 k 이상이면 해당 reporter에게 보내지는 메일 +1.
+
+    for value in ids.values():
+        if len(value) >= k:
+            for reporter in value:
+                cnt = report_cnt.get(reporter)
+                report_cnt[reporter] = cnt+1
+    result = [cnt for cnt in report_cnt.values()]
+    # id_list 순서대로 기록되었으므로(defaultdict와 상동) 그대로 리스트로 return.
+    return result
